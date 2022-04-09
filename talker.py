@@ -33,6 +33,7 @@ def talker():
 
         Tt = 0.05
         dt = 0.1
+        time_arr = [i / 10 for i in range(0, int(time / dt))]
 
         w_target_left = (2 * v_target - q_target * L) / (2 * r)
         w_target_right = (2 * v_target + q_target * L) / (2 * r)
@@ -98,6 +99,13 @@ def talker():
             pub_real2D.publish(coord)
             # rospy.loginfo(coord)
 
+            # enc_data=JointState()
+            # enc_data.header=rospy.Time.now()
+            # enc_data.name=['left_encoder','right_encoder']
+            # enc_data.position=[E[i][0],E[i][1]]
+            # pub_enc.publish(enc_data)
+            # rospy.loginfo(enc_data)
+
             coord_real = Twist()
             coord_real.linear.y = v_real[i]
             coord_real.angular.z = q_real[i]
@@ -107,6 +115,7 @@ def talker():
             coord_targ = Pose2D()
             coord_targ.x = x_target[i]
             coord_targ.y = y_target[i]
+            # coord_targ.theta=theta_real[i] #theta REAL, NOT TARGET !!!!
             pub_targ.publish(coord_targ)
 
             status = 'True'

@@ -51,25 +51,38 @@ def callback_real(data):
     q_real.append(data.linear.z)
 
 
-def callback_targ(data):
+def callback_targ(data):  # theta -- REAL !!!!!!!!!!!!! (NOT TARGET!!!!)
     x_targ.append(data.x)
     y_targ.append(data.y)
 
 
 def callback_real2D(data):
-    rospy.loginfo("x: %f ; y: %f ; theta: %f", data.x, data.y, data.theta)
+    # rospy.loginfo("x: %f ; y: %f ; theta: %f", data.x, data.y, data.theta)
     theta_real.append(data.theta)
-    log_enc()
+    log_data()
 
 
-def log_enc():
+def log_data():
     global count_log
     enc_data = JointState()
     enc_data.header = rospy.Time.now()
     enc_data.name = ['left_encoder', 'right_encoder']
     enc_data.position = [E[count_log][0], E[count_log][1]]
     rospy.loginfo(enc_data)
+
+    coord = Pose2D()
+    coord.x = x_enc[count_log]
+    coord.y = y_enc[count_log]
+    coord.theta = theta_enc[count_log]
+    rospy.loginfo(coord)
+
     count_log += 1
+
+
+# def callback_enc(data):
+# rospy.loginfo("header: %f ; name: %f ; position: %f", 333, data.name, data.position)
+# rospy.loginfo(enc_data)
+
 
 def string_bar(string):
     # rospy.loginfo(rospy.get_caller_id() +'I heard %s', string.data)
